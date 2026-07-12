@@ -1,0 +1,23 @@
+{
+  "projectSettings": {
+    "framework": "vite",
+    "buildCommand": "npm run build",
+    "outputDirectory": "dist",
+    "devCommand": "vite"
+  },
+  "env": {
+    "VITE_SUPABASE_URL": "@vite_supabase_url",
+    "VITE_SUPABASE_PUBLISHABLE_KEY": "@vite_supabase_publishable_key"
+  },
+  "git": {
+    "deploymentEnabled": {
+      "main": true
+    }
+  },
+  "routes": [
+    {
+      "src": "/(?!api).*",
+      "dest": "/index.html"
+    }
+  ]
+}
