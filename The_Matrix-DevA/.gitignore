@@ -1,0 +1,25 @@
+# Dependencies
+node_modules/
+
+# Build
+dist/
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# IDE / OS
+.DS_Store
+*.swp
+*.swo
+
+# Local config (not pushed)
+.agents/
+.claude/
+skills-lock.json
+
+# Docs kept local
+implementation_plan.md
+architecture_patch_v1.1.md
+*.pdf

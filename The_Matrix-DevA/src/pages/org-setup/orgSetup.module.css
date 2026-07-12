@@ -1,0 +1,326 @@
+/* ============================================
+   orgSetup.module.css — OrgSetup page styles
+   Shared by all org-setup tabs
+   ============================================ */
+
+/* -- Page layout ----------------------------------------------- */
+.page {
+  min-height: 100dvh;
+  background: #080b12;
+  font-family: 'Inter', system-ui, sans-serif;
+  color: #e2e8f0;
+}
+
+/* -- Header ---------------------------------------------------- */
+.header {
+  background: rgba(255,255,255,0.03);
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+  padding: 0 2rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  height: 60px;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  backdrop-filter: blur(12px);
+}
+
+.headerLogo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 700;
+  font-size: 1.0625rem;
+  background: linear-gradient(135deg, #e2e8f0, #a5b4fc);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.headerLogoIcon {
+  width: 32px;
+  height: 32px;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  flex-shrink: 0;
+}
+
+.headerTitle {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: #f1f5f9;
+}
+
+.headerSep {
+  color: #334155;
+  font-size: 1.25rem;
+}
+
+/* -- Body ------------------------------------------------------ */
+.body {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+}
+
+.pageTitle {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #f8fafc;
+  margin: 0 0 0.375rem;
+  letter-spacing: -0.02em;
+}
+
+.pageSub {
+  font-size: 0.875rem;
+  color: #64748b;
+  margin: 0 0 2rem;
+}
+
+/* -- Tabs ------------------------------------------------------ */
+.tabs {
+  display: flex;
+  gap: 0.25rem;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+  margin-bottom: 2rem;
+}
+
+.tab {
+  padding: 0.625rem 1.125rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #64748b;
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+  margin-bottom: -1px;
+  transition: color 0.15s, border-color 0.15s;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: inherit;
+}
+
+.tab:hover { color: #94a3b8; }
+
+.tabActive {
+  color: #818cf8;
+  border-bottom-color: #6366f1;
+}
+
+/* -- Section header -------------------------------------------- */
+.sectionHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.25rem;
+}
+
+.sectionTitle {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #e2e8f0;
+  margin: 0;
+}
+
+/* -- Primary button -------------------------------------------- */
+.btnPrimary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4375rem;
+  padding: 0.5625rem 1rem;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  border: none;
+  border-radius: 8px;
+  color: #fff;
+  font-family: inherit;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.2s, transform 0.15s;
+  box-shadow: 0 4px 12px rgba(99,102,241,0.3);
+}
+
+.btnPrimary:hover { opacity: 0.88; transform: translateY(-1px); }
+.btnPrimary:active { transform: none; }
+
+/* -- Ghost / icon button --------------------------------------- */
+.btnGhost {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.4375rem 0.75rem;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 7px;
+  color: #94a3b8;
+  font-family: inherit;
+  font-size: 0.8125rem;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+
+.btnGhost:hover { background: rgba(255,255,255,0.08); color: #e2e8f0; }
+
+.btnDanger {
+  composes: btnGhost;
+  color: #f87171;
+  border-color: rgba(248,113,113,0.2);
+}
+
+.btnDanger:hover { background: rgba(248,113,113,0.1); color: #fca5a5; }
+
+/* -- Table ----------------------------------------------------- */
+.tableWrap {
+  background: rgba(255,255,255,0.025);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.th {
+  padding: 0.75rem 1rem;
+  text-align: left;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #475569;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  background: rgba(255,255,255,0.02);
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+.td {
+  padding: 0.875rem 1rem;
+  font-size: 0.875rem;
+  color: #cbd5e1;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  vertical-align: middle;
+}
+
+.tr:last-child .td { border-bottom: none; }
+
+.tr:hover .td { background: rgba(255,255,255,0.03); }
+
+/* -- Badge ----------------------------------------------------- */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.1875rem 0.625rem;
+  border-radius: 999px;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.badgeSuccess { background: rgba(34,197,94,0.12); color: #4ade80; }
+.badgeNeutral { background: rgba(148,163,184,0.1); color: #94a3b8; }
+.badgeInfo    { background: rgba(99,102,241,0.12); color: #818cf8; }
+.badgeWarning { background: rgba(251,191,36,0.12); color: #fbbf24; }
+
+/* -- Empty state ----------------------------------------------- */
+.empty {
+  text-align: center;
+  padding: 3rem 1rem;
+  color: #475569;
+}
+
+.emptyIcon {
+  margin-bottom: 0.75rem;
+  opacity: 0.4;
+}
+
+.emptyText {
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: #64748b;
+}
+
+.emptySub {
+  font-size: 0.8125rem;
+  color: #475569;
+  margin-top: 0.25rem;
+}
+
+/* -- Loading --------------------------------------------------- */
+.loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem;
+  color: #475569;
+}
+
+.loadingSpinner {
+  width: 28px;
+  height: 28px;
+  border: 2px solid rgba(255,255,255,0.08);
+  border-top-color: #6366f1;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* -- Avatar ---------------------------------------------------- */
+.avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #fff;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+
+.avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.profileCell {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.profileName { font-weight: 500; color: #e2e8f0; }
+.profileEmail { font-size: 0.75rem; color: #64748b; }
+
+/* -- Actions --------------------------------------------------- */
+.actions {
+  display: flex;
+  gap: 0.375rem;
+}
+
+/* -- Role pill ------------------------------------------------- */
+.rolePill {
+  display: inline-block;
+  padding: 0.1875rem 0.5rem;
+  border-radius: 6px;
+  font-size: 0.6875rem;
+  font-weight: 600;
+}
+
+.roleEmployee       { background: rgba(148,163,184,0.1); color: #94a3b8; }
+.roleDeptHead       { background: rgba(251,191,36,0.1);  color: #fbbf24; }
+.roleAssetManager   { background: rgba(99,102,241,0.1);  color: #818cf8; }
+.roleAdmin          { background: rgba(239,68,68,0.1);   color: #f87171; }
