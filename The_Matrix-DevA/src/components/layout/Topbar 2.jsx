@@ -9,13 +9,11 @@ import { useNavigate } from 'react-router-dom';
 import { useAuthStore, selectProfile } from '../../stores/authStore';
 import { useUIStore } from '../../stores/uiStore';
 import { signOut } from '../../services/auth.service';
-import { useNotificationStore } from '../../stores/notificationStore';
 import { toast } from 'sonner';
 import styles from './Topbar.module.css';
 
 export function Topbar() {
   const profile = useAuthStore(selectProfile);
-  const unreadCount = useNotificationStore((s) => s.unreadCount);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
   const navigate = useNavigate();
@@ -67,16 +65,14 @@ export function Topbar() {
       </div>
 
       <div className={styles.actions}>
-        {/* Notifications Icon */}
+        {/* Notifications Icon (DevD will implement functionality) */}
         <button
           className={styles.notificationBtn}
           onClick={() => navigate('/notifications')}
           aria-label="View notifications"
         >
           <Bell size={20} />
-          {unreadCount > 0 && (
-            <span className={styles.notificationBadge}>{unreadCount}</span>
-          )}
+          {/* Badge indicator could go here if notifications count exists */}
         </button>
 
         {/* User profile dropdown */}

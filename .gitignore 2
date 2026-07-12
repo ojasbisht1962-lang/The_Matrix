@@ -1,0 +1,8 @@
+# Ignore accidental root-level duplicates and IDE folders
+.DS_Store
+.agents/
+.claude/
+.env.local
+node_modules/
+src/
+supabase/

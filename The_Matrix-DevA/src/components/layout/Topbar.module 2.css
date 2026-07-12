@@ -57,25 +57,6 @@
   background: var(--color-bg-hover);
 }
 
-.notificationBadge {
-  position: absolute;
-  top: 0px;
-  right: 0px;
-  background: var(--color-danger);
-  color: #fff;
-  font-family: var(--font-sans);
-  font-size: 10px;
-  font-weight: 700;
-  min-width: 16px;
-  height: 16px;
-  padding: 0 4px;
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid var(--color-bg-elevated);
-}
-
 .userMenu {
   position: relative;
 }

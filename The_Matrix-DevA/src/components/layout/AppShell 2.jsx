@@ -7,13 +7,8 @@ import { Outlet } from 'react-router-dom';
 import { Sidebar } from './Sidebar';
 import { Topbar } from './Topbar';
 import styles from './AppShell.module.css';
-import { useAuth } from '../../hooks/useAuth';
-import { useRealtime } from '../../hooks/useRealtime';
 
 export default function AppShell() {
-  const { profile } = useAuth();
-  useRealtime(profile?.id);
-
   return (
     <div className={styles.container}>
       <Sidebar />
