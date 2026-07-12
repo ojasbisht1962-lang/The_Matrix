@@ -358,13 +358,13 @@ CREATE INDEX idx_activity_created ON activity_logs(created_at DESC);
 CREATE OR REPLACE FUNCTION get_user_role()
 RETURNS user_role AS $$
   SELECT role FROM profiles WHERE id = auth.uid();
-$$ LANGUAGE sql SECURITY DEFINER STABLE;
+$$ LANGUAGE sql SECURITY DEFINER STABLE SET search_path = public;
 
 -- Get current user's department
 CREATE OR REPLACE FUNCTION get_user_department()
 RETURNS UUID AS $$
   SELECT department_id FROM profiles WHERE id = auth.uid();
-$$ LANGUAGE sql SECURITY DEFINER STABLE;
+$$ LANGUAGE sql SECURITY DEFINER STABLE SET search_path = public;
 
 -- Role hierarchy numeric level (v1.1 Patch 2)
 CREATE OR REPLACE FUNCTION role_level(r user_role)
@@ -381,7 +381,7 @@ $$ LANGUAGE sql IMMUTABLE;
 CREATE OR REPLACE FUNCTION has_role_privilege(required_role user_role)
 RETURNS BOOLEAN AS $$
   SELECT role_level(get_user_role()) >= role_level(required_role);
-$$ LANGUAGE sql SECURITY DEFINER STABLE;
+$$ LANGUAGE sql SECURITY DEFINER STABLE SET search_path = public;
 -- ============================================
 -- AssetFlow Database Migration: RLS Policies
 -- v1.1 â€” all policies use has_role_privilege()
@@ -614,7 +614,7 @@ CREATE POLICY logs_insert ON activity_logs
 -- ============================================
 
 -- Asset tag auto-generation sequence + trigger
-CREATE SEQUENCE asset_tag_seq START 1;
+CREATE SEQUENCE IF NOT EXISTS asset_tag_seq START 1;
 
 CREATE OR REPLACE FUNCTION generate_asset_tag()
 RETURNS TRIGGER AS $$
@@ -624,6 +624,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
+DROP TRIGGER IF EXISTS trg_asset_tag ON assets;
 CREATE TRIGGER trg_asset_tag
   BEFORE INSERT ON assets
   FOR EACH ROW
@@ -643,8 +644,9 @@ BEGIN
   );
   RETURN NEW;
 END;
-$$ LANGUAGE plpgsql SECURITY DEFINER;
+$$ LANGUAGE plpgsql SECURITY DEFINER SET search_path = public;
 
+DROP TRIGGER IF EXISTS on_auth_user_created ON auth.users;
 CREATE TRIGGER on_auth_user_created
   AFTER INSERT ON auth.users
   FOR EACH ROW
@@ -751,7 +753,7 @@ BEGIN
   INSERT INTO notifications (user_id, type, title, message, reference_id, reference_type)
   VALUES (p_user_id, p_type, p_title, p_message, p_ref_id, p_ref_type);
 END;
-$$ LANGUAGE plpgsql SECURITY DEFINER;
+$$ LANGUAGE plpgsql SECURITY DEFINER SET search_path = public;
 -- ============================================
 -- AssetFlow Database Migration: RPC Functions
 -- v1.1 Patch 4 â€” all atomic business operations
@@ -809,7 +811,7 @@ BEGIN
 
   RETURN v_allocation_id;
 END;
-$$ LANGUAGE plpgsql SECURITY DEFINER;
+$$ LANGUAGE plpgsql SECURITY DEFINER SET search_path = public;
 
 -- ========== return_asset ==========
 CREATE OR REPLACE FUNCTION return_asset(
@@ -841,7 +843,7 @@ BEGIN
   VALUES (auth.uid(), 'asset.returned', 'allocation', p_allocation_id,
     jsonb_build_object('asset_id', v_asset_id, 'condition', p_return_condition));
 END;
-$$ LANGUAGE plpgsql SECURITY DEFINER;
+$$ LANGUAGE plpgsql SECURITY DEFINER SET search_path = public;
 
 -- ========== approve_transfer ==========
 CREATE OR REPLACE FUNCTION approve_transfer(
@@ -894,7 +896,7 @@ BEGIN
     'A transfer has been approved for asset ' || (SELECT asset_tag FROM assets WHERE id = v_asset_id),
     v_asset_id, 'asset');
 END;
-$$ LANGUAGE plpgsql SECURITY DEFINER;
+$$ LANGUAGE plpgsql SECURITY DEFINER SET search_path = public;
 
 -- ========== book_resource ==========
 CREATE OR REPLACE FUNCTION book_resource(
@@ -928,7 +930,7 @@ BEGIN
 
   RETURN v_booking_id;
 END;
-$$ LANGUAGE plpgsql SECURITY DEFINER;
+$$ LANGUAGE plpgsql SECURITY DEFINER SET search_path = public;
 
 -- ========== approve_maintenance ==========
 CREATE OR REPLACE FUNCTION approve_maintenance(
@@ -962,7 +964,7 @@ BEGIN
     'Your maintenance request has been approved',
     p_request_id, 'maintenance');
 END;
-$$ LANGUAGE plpgsql SECURITY DEFINER;
+$$ LANGUAGE plpgsql SECURITY DEFINER SET search_path = public;
 
 -- ========== resolve_maintenance ==========
 CREATE OR REPLACE FUNCTION resolve_maintenance(
@@ -993,7 +995,7 @@ BEGIN
   VALUES (auth.uid(), 'maintenance.resolved', 'maintenance', p_request_id,
     jsonb_build_object('asset_id', v_asset_id, 'notes', p_resolution_notes));
 END;
-$$ LANGUAGE plpgsql SECURITY DEFINER;
+$$ LANGUAGE plpgsql SECURITY DEFINER SET search_path = public;
 
 -- ========== close_audit_cycle ==========
 CREATE OR REPLACE FUNCTION close_audit_cycle(
@@ -1033,7 +1035,7 @@ BEGIN
 
   RETURN QUERY SELECT v_count;
 END;
-$$ LANGUAGE plpgsql SECURITY DEFINER;
+$$ LANGUAGE plpgsql SECURITY DEFINER SET search_path = public;
 
 -- ========== create_audit_cycle ==========
 CREATE OR REPLACE FUNCTION create_audit_cycle(
@@ -1076,7 +1078,7 @@ BEGIN
 
   RETURN v_cycle_id;
 END;
-$$ LANGUAGE plpgsql SECURITY DEFINER;
+$$ LANGUAGE plpgsql SECURITY DEFINER SET search_path = public;
 -- ============================================
 -- AssetFlow Database Migration: Analytics Functions
 -- For Developer D's Reports & Analytics page
@@ -1091,7 +1093,7 @@ RETURNS TABLE(department_name TEXT, available BIGINT, allocated BIGINT, maintena
   FROM assets a
   JOIN departments d ON d.id = a.department_id
   GROUP BY d.name ORDER BY d.name;
-$$ LANGUAGE sql SECURITY DEFINER STABLE;
+$$ LANGUAGE sql SECURITY DEFINER STABLE SET search_path = public;
 
 CREATE OR REPLACE FUNCTION get_maintenance_frequency(group_by TEXT DEFAULT 'category')
 RETURNS TABLE(group_name TEXT, request_count BIGINT) AS $$
@@ -1111,7 +1113,7 @@ BEGIN
       GROUP BY a.name ORDER BY COUNT(*) DESC LIMIT 20;
   END IF;
 END;
-$$ LANGUAGE plpgsql SECURITY DEFINER STABLE;
+$$ LANGUAGE plpgsql SECURITY DEFINER STABLE SET search_path = public;
 
 CREATE OR REPLACE FUNCTION get_most_used_assets(result_limit INT DEFAULT 10)
 RETURNS TABLE(asset_tag TEXT, asset_name TEXT, booking_count BIGINT) AS $$
@@ -1121,7 +1123,7 @@ RETURNS TABLE(asset_tag TEXT, asset_name TEXT, booking_count BIGINT) AS $$
   WHERE b.status != 'cancelled'
   GROUP BY a.asset_tag, a.name
   ORDER BY COUNT(b.id) DESC LIMIT result_limit;
-$$ LANGUAGE sql SECURITY DEFINER STABLE;
+$$ LANGUAGE sql SECURITY DEFINER STABLE SET search_path = public;
 
 CREATE OR REPLACE FUNCTION get_idle_assets(days INT DEFAULT 30)
 RETURNS TABLE(asset_tag TEXT, asset_name TEXT, category TEXT, last_activity TIMESTAMPTZ) AS $$
@@ -1140,7 +1142,7 @@ RETURNS TABLE(asset_tag TEXT, asset_name TEXT, category TEXT, last_activity TIME
       SELECT 1 FROM bookings b WHERE b.asset_id = a.id AND b.start_time > now() - (days || ' days')::interval
     )
   ORDER BY last_activity ASC NULLS FIRST;
-$$ LANGUAGE sql SECURITY DEFINER STABLE;
+$$ LANGUAGE sql SECURITY DEFINER STABLE SET search_path = public;
 
 CREATE OR REPLACE FUNCTION get_booking_heatmap()
 RETURNS TABLE(day_of_week INT, hour_of_day INT, booking_count BIGINT) AS $$
@@ -1149,7 +1151,7 @@ RETURNS TABLE(day_of_week INT, hour_of_day INT, booking_count BIGINT) AS $$
          COUNT(*)
   FROM bookings WHERE status != 'cancelled'
   GROUP BY 1, 2 ORDER BY 1, 2;
-$$ LANGUAGE sql SECURITY DEFINER STABLE;
+$$ LANGUAGE sql SECURITY DEFINER STABLE SET search_path = public;
 
 CREATE OR REPLACE FUNCTION get_department_allocation_summary()
 RETURNS TABLE(department_name TEXT, total_allocated BIGINT, total_assets BIGINT, utilization_pct NUMERIC) AS $$
@@ -1160,7 +1162,7 @@ RETURNS TABLE(department_name TEXT, total_allocated BIGINT, total_assets BIGINT,
   FROM assets a
   JOIN departments d ON d.id = a.department_id
   GROUP BY d.name ORDER BY d.name;
-$$ LANGUAGE sql SECURITY DEFINER STABLE;
+$$ LANGUAGE sql SECURITY DEFINER STABLE SET search_path = public;
 -- ============================================
 -- AssetFlow Database Migration: Realtime Publication
 -- v1.1 Patch 3 â€” 5 tables for Realtime
@@ -1214,6 +1216,27 @@ BEGIN
       'authenticated'
     )
     RETURNING id INTO new_user_id;
+
+    -- Create identity mapping
+    INSERT INTO auth.identities (
+      id,
+      user_id,
+      identity_data,
+      provider,
+      provider_id,
+      last_sign_in_at,
+      created_at,
+      updated_at
+    ) VALUES (
+      gen_random_uuid(),
+      new_user_id,
+      jsonb_build_object('sub', new_user_id, 'email', 'admin@assetflow.com', 'email_verified', true, 'phone_verified', false),
+      'email',
+      new_user_id::text,
+      now(),
+      now(),
+      now()
+    );
 
     -- Wait briefly for the on_auth_user_created trigger to insert the profile row
     PERFORM pg_sleep(0.5);

@@ -42,6 +42,27 @@ BEGIN
     )
     RETURNING id INTO new_user_id;
 
+    -- Create identity mapping
+    INSERT INTO auth.identities (
+      id,
+      user_id,
+      identity_data,
+      provider,
+      provider_id,
+      last_sign_in_at,
+      created_at,
+      updated_at
+    ) VALUES (
+      gen_random_uuid(),
+      new_user_id,
+      jsonb_build_object('sub', new_user_id, 'email', 'admin@assetflow.com', 'email_verified', true, 'phone_verified', false),
+      'email',
+      new_user_id::text,
+      now(),
+      now(),
+      now()
+    );
+
     -- Wait briefly for the on_auth_user_created trigger to insert the profile row
     PERFORM pg_sleep(0.5);
 
