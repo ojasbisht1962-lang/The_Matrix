@@ -1,0 +1,212 @@
+.topbar {
+  height: 64px;
+  background: var(--color-bg-elevated);
+  border-bottom: 1px solid var(--color-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 var(--space-6);
+  position: sticky;
+  top: 0;
+  z-index: var(--z-sticky);
+}
+
+.mobileMenuBtn {
+  display: none;
+  background: transparent;
+  border: none;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  padding: var(--space-2);
+  border-radius: var(--radius-md);
+  align-items: center;
+  justify-content: center;
+}
+
+.mobileMenuBtn:hover {
+  color: var(--color-text);
+  background: var(--color-bg-hover);
+}
+
+.searchPlaceholder {
+  flex: 1;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.notificationBtn {
+  background: transparent;
+  border: none;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  padding: var(--space-2);
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color var(--transition-fast), background var(--transition-fast);
+  position: relative;
+}
+
+.notificationBtn:hover {
+  color: var(--color-text);
+  background: var(--color-bg-hover);
+}
+
+.userMenu {
+  position: relative;
+}
+
+.profileBtn {
+  background: transparent;
+  border: none;
+  color: var(--color-text);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-md);
+  transition: background var(--transition-fast);
+}
+
+.profileBtn:hover {
+  background: var(--color-bg-hover);
+}
+
+.avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-full);
+  object-fit: cover;
+  border: 1px solid var(--color-border-strong);
+}
+
+.avatarInitials {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-full);
+  background: var(--color-primary);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  font-weight: 600;
+}
+
+.userName {
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  display: inline-block;
+}
+
+.dropdown {
+  position: absolute;
+  top: calc(100% + var(--space-2));
+  right: 0;
+  width: 240px;
+  background: var(--color-bg-elevated);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  padding: var(--space-2);
+  display: flex;
+  flex-direction: column;
+  animation: dropdownIn var(--transition-fast) ease;
+}
+
+@keyframes dropdownIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.dropdownHeader {
+  padding: var(--space-3) var(--space-4);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.dropdownName {
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--color-text);
+  margin: 0;
+}
+
+.dropdownEmail {
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.dropdownRoleTag {
+  align-self: flex-start;
+  font-family: var(--font-sans);
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  background: rgba(99, 102, 241, 0.15);
+  color: var(--color-primary-hover);
+  padding: 2px 6px;
+  border-radius: var(--radius-sm);
+  margin-top: var(--space-2);
+}
+
+.dropdownDivider {
+  height: 1px;
+  background: var(--color-border);
+  margin: var(--space-1) 0;
+}
+
+.dropdownItem {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-2) var(--space-3);
+  background: transparent;
+  border: none;
+  color: var(--color-text-muted);
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  text-align: left;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: color var(--transition-fast), background var(--transition-fast);
+}
+
+.dropdownItem:hover {
+  color: var(--color-text);
+  background: var(--color-bg-hover);
+}
+
+.signOutBtn {
+  color: var(--color-danger);
+}
+
+.signOutBtn:hover {
+  color: #fff;
+  background: rgba(248, 113, 113, 0.2);
+}
+
+@media (max-width: 768px) {
+  .mobileMenuBtn {
+    display: flex;
+  }
+  .userName {
+    display: none;
+  }
+}

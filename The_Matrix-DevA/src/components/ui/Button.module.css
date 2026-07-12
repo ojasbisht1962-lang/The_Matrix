@@ -1,0 +1,107 @@
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  border: none;
+  border-radius: var(--radius-md);
+  font-family: var(--font-sans);
+  font-weight: 500;
+  line-height: 1;
+  cursor: pointer;
+  transition:
+    background var(--transition-fast),
+    box-shadow var(--transition-fast),
+    opacity var(--transition-fast),
+    transform var(--transition-fast);
+  white-space: nowrap;
+  text-decoration: none;
+  outline: none;
+  position: relative;
+  user-select: none;
+}
+
+.btn:focus-visible {
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.4);
+}
+
+.btn:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+/* Sizes */
+.size-sm {
+  padding: var(--space-2) var(--space-3);
+  font-size: var(--text-xs);
+  height: 30px;
+}
+
+.size-md {
+  padding: var(--space-2) var(--space-5);
+  font-size: var(--text-sm);
+  height: 38px;
+}
+
+.size-lg {
+  padding: var(--space-3) var(--space-6);
+  font-size: var(--text-base);
+  height: 46px;
+}
+
+/* Variants */
+.variant-primary {
+  background: var(--color-primary);
+  color: #fff;
+}
+.variant-primary:hover:not(:disabled) {
+  background: var(--color-primary-hover);
+  box-shadow: 0 0 20px rgba(99, 102, 241, 0.35);
+}
+
+.variant-secondary {
+  background: var(--color-bg-elevated);
+  color: var(--color-text);
+  border: 1px solid var(--color-border-strong);
+}
+.variant-secondary:hover:not(:disabled) {
+  background: var(--color-bg-hover);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.variant-ghost {
+  background: transparent;
+  color: var(--color-text-muted);
+  border: 1px solid transparent;
+}
+.variant-ghost:hover:not(:disabled) {
+  background: var(--color-bg-hover);
+  color: var(--color-text);
+}
+
+.variant-danger {
+  background: rgba(248, 113, 113, 0.15);
+  color: var(--color-danger);
+  border: 1px solid rgba(248, 113, 113, 0.25);
+}
+.variant-danger:hover:not(:disabled) {
+  background: rgba(248, 113, 113, 0.25);
+  border-color: var(--color-danger);
+}
+
+/* States */
+.btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.loading {
+  cursor: wait;
+  opacity: 0.8;
+}
+
+.iconLeft,
+.iconRight {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}

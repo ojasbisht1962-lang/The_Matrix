@@ -1,0 +1,32 @@
+.container {
+  display: flex;
+  min-height: 100vh;
+  background: var(--color-bg);
+  color: var(--color-text);
+  overflow: hidden;
+}
+
+.mainWrapper {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0; /* Prevents flex children from breaking layout on narrow viewports */
+  height: 100vh;
+}
+
+.mainContent {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--space-6);
+  background: var(--color-bg);
+}
+
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+  }
+  .mainWrapper {
+    height: auto;
+    min-height: calc(100vh - 64px);
+  }
+}

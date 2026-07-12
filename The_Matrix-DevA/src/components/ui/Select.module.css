@@ -1,0 +1,83 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  width: 100%;
+}
+
+.label {
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--color-text);
+  font-family: var(--font-sans);
+}
+
+.required {
+  color: var(--color-danger);
+  margin-left: 3px;
+}
+
+.selectRow {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.select {
+  width: 100%;
+  height: 38px;
+  padding: 0 2.5rem 0 var(--space-4);
+  background: var(--color-bg-elevated);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-md);
+  color: var(--color-text);
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+  outline: none;
+  -webkit-appearance: none;
+  appearance: none;
+  cursor: pointer;
+}
+
+.select:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+}
+
+.select:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.select option {
+  background: var(--color-bg-elevated);
+  color: var(--color-text);
+}
+
+.hasError {
+  border-color: var(--color-danger) !important;
+}
+
+.chevron {
+  position: absolute;
+  right: var(--space-3);
+  display: flex;
+  align-items: center;
+  color: var(--color-text-muted);
+  pointer-events: none;
+}
+
+.error {
+  font-size: var(--text-xs);
+  color: var(--color-danger);
+  margin: 0;
+  font-family: var(--font-sans);
+}
+
+.hint {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  margin: 0;
+  font-family: var(--font-sans);
+}
