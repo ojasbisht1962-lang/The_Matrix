@@ -5,7 +5,7 @@
 -- ============================================
 
 -- Asset tag auto-generation sequence + trigger
-CREATE SEQUENCE asset_tag_seq START 1;
+CREATE SEQUENCE IF NOT EXISTS asset_tag_seq START 1;
 
 CREATE OR REPLACE FUNCTION generate_asset_tag()
 RETURNS TRIGGER AS $$
@@ -15,6 +15,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
+DROP TRIGGER IF EXISTS trg_asset_tag ON assets;
 CREATE TRIGGER trg_asset_tag
   BEFORE INSERT ON assets
   FOR EACH ROW
@@ -34,9 +35,7 @@ BEGIN
   );
   RETURN NEW;
 END;
-$$ LANGUAGE plpgsql SECURITY DEFINER;
+$$ LANGUAGE plpgsql SECURITY DEFINER SET search_path = public;
 
 CREATE TRIGGER on_auth_user_created
-  AFTER INSERT ON auth.users
-  FOR EACH ROW
-  EXECUTE FUNCTION handle_new_user();
+  AFTER INSERT ON auth

@@ -7,13 +7,13 @@
 CREATE OR REPLACE FUNCTION get_user_role()
 RETURNS user_role AS $$
   SELECT role FROM profiles WHERE id = auth.uid();
-$$ LANGUAGE sql SECURITY DEFINER STABLE;
+$$ LANGUAGE sql SECURITY DEFINER STABLE SET search_path = public;
 
 -- Get current user's department
 CREATE OR REPLACE FUNCTION get_user_department()
 RETURNS UUID AS $$
   SELECT department_id FROM profiles WHERE id = auth.uid();
-$$ LANGUAGE sql SECURITY DEFINER STABLE;
+$$ LANGUAGE sql SECURITY DEFINER STABLE SET search_path = public;
 
 -- Role hierarchy numeric level (v1.1 Patch 2)
 CREATE OR REPLACE FUNCTION role_level(r user_role)
@@ -30,4 +30,4 @@ $$ LANGUAGE sql IMMUTABLE;
 CREATE OR REPLACE FUNCTION has_role_privilege(required_role user_role)
 RETURNS BOOLEAN AS $$
   SELECT role_level(get_user_role()) >= role_level(required_role);
-$$ LANGUAGE sql SECURITY DEFINER STABLE;
+$$ LANGUAGE sql SECURITY DEFINER STABLE SET search_path = public;

@@ -14,4 +14,4 @@ BEGIN
   INSERT INTO notifications (user_id, type, title, message, reference_id, reference_type)
   VALUES (p_user_id, p_type, p_title, p_message, p_ref_id, p_ref_type);
 END;
-$$ LANGUAGE plpgsql SECURITY DEFINER;
+$$ LANGUAGE plpgsql SECURITY DEFINER SET search_path = public;

@@ -55,7 +55,7 @@ BEGIN
 
   RETURN v_allocation_id;
 END;
-$$ LANGUAGE plpgsql SECURITY DEFINER;
+$$ LANGUAGE plpgsql SECURITY DEFINER SET search_path = public;
 
 -- ========== return_asset ==========
 CREATE OR REPLACE FUNCTION return_asset(
@@ -87,7 +87,7 @@ BEGIN
   VALUES (auth.uid(), 'asset.returned', 'allocation', p_allocation_id,
     jsonb_build_object('asset_id', v_asset_id, 'condition', p_return_condition));
 END;
-$$ LANGUAGE plpgsql SECURITY DEFINER;
+$$ LANGUAGE plpgsql SECURITY DEFINER SET search_path = public;
 
 -- ========== approve_transfer ==========
 CREATE OR REPLACE FUNCTION approve_transfer(
@@ -140,7 +140,7 @@ BEGIN
     'A transfer has been approved for asset ' || (SELECT asset_tag FROM assets WHERE id = v_asset_id),
     v_asset_id, 'asset');
 END;
-$$ LANGUAGE plpgsql SECURITY DEFINER;
+$$ LANGUAGE plpgsql SECURITY DEFINER SET search_path = public;
 
 -- ========== book_resource ==========
 CREATE OR REPLACE FUNCTION book_resource(
@@ -174,7 +174,7 @@ BEGIN
 
   RETURN v_booking_id;
 END;
-$$ LANGUAGE plpgsql SECURITY DEFINER;
+$$ LANGUAGE plpgsql SECURITY DEFINER SET search_path = public;
 
 -- ========== approve_maintenance ==========
 CREATE OR REPLACE FUNCTION approve_maintenance(
@@ -208,7 +208,7 @@ BEGIN
     'Your maintenance request has been approved',
     p_request_id, 'maintenance');
 END;
-$$ LANGUAGE plpgsql SECURITY DEFINER;
+$$ LANGUAGE plpgsql SECURITY DEFINER SET search_path = public;
 
 -- ========== resolve_maintenance ==========
 CREATE OR REPLACE FUNCTION resolve_maintenance(
@@ -239,7 +239,7 @@ BEGIN
   VALUES (auth.uid(), 'maintenance.resolved', 'maintenance', p_request_id,
     jsonb_build_object('asset_id', v_asset_id, 'notes', p_resolution_notes));
 END;
-$$ LANGUAGE plpgsql SECURITY DEFINER;
+$$ LANGUAGE plpgsql SECURITY DEFINER SET search_path = public;
 
 -- ========== close_audit_cycle ==========
 CREATE OR REPLACE FUNCTION close_audit_cycle(
@@ -279,7 +279,7 @@ BEGIN
 
   RETURN QUERY SELECT v_count;
 END;
-$$ LANGUAGE plpgsql SECURITY DEFINER;
+$$ LANGUAGE plpgsql SECURITY DEFINER SET search_path = public;
 
 -- ========== create_audit_cycle ==========
 CREATE OR REPLACE FUNCTION create_audit_cycle(
@@ -322,4 +322,4 @@ BEGIN
 
   RETURN v_cycle_id;
 END;
-$$ LANGUAGE plpgsql SECURITY DEFINER;
+$$ LANGUAGE plpgsql SECURITY DEFINER SET search_path = public;

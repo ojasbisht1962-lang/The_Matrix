@@ -12,7 +12,7 @@ RETURNS TABLE(department_name TEXT, available BIGINT, allocated BIGINT, maintena
   FROM assets a
   JOIN departments d ON d.id = a.department_id
   GROUP BY d.name ORDER BY d.name;
-$$ LANGUAGE sql SECURITY DEFINER STABLE;
+$$ LANGUAGE sql SECURITY DEFINER STABLE SET search_path = public;
 
 CREATE OR REPLACE FUNCTION get_maintenance_frequency(group_by TEXT DEFAULT 'category')
 RETURNS TABLE(group_name TEXT, request_count BIGINT) AS $$
@@ -32,7 +32,7 @@ BEGIN
       GROUP BY a.name ORDER BY COUNT(*) DESC LIMIT 20;
   END IF;
 END;
-$$ LANGUAGE plpgsql SECURITY DEFINER STABLE;
+$$ LANGUAGE plpgsql SECURITY DEFINER STABLE SET search_path = public;
 
 CREATE OR REPLACE FUNCTION get_most_used_assets(result_limit INT DEFAULT 10)
 RETURNS TABLE(asset_tag TEXT, asset_name TEXT, booking_count BIGINT) AS $$
@@ -42,7 +42,7 @@ RETURNS TABLE(asset_tag TEXT, asset_name TEXT, booking_count BIGINT) AS $$
   WHERE b.status != 'cancelled'
   GROUP BY a.asset_tag, a.name
   ORDER BY COUNT(b.id) DESC LIMIT result_limit;
-$$ LANGUAGE sql SECURITY DEFINER STABLE;
+$$ LANGUAGE sql SECURITY DEFINER STABLE SET search_path = public;
 
 CREATE OR REPLACE FUNCTION get_idle_assets(days INT DEFAULT 30)
 RETURNS TABLE(asset_tag TEXT, asset_name TEXT, category TEXT, last_activity TIMESTAMPTZ) AS $$
@@ -61,7 +61,7 @@ RETURNS TABLE(asset_tag TEXT, asset_name TEXT, category TEXT, last_activity TIME
       SELECT 1 FROM bookings b WHERE b.asset_id = a.id AND b.start_time > now() - (days || ' days')::interval
     )
   ORDER BY last_activity ASC NULLS FIRST;
-$$ LANGUAGE sql SECURITY DEFINER STABLE;
+$$ LANGUAGE sql SECURITY DEFINER STABLE SET search_path = public;
 
 CREATE OR REPLACE FUNCTION get_booking_heatmap()
 RETURNS TABLE(day_of_week INT, hour_of_day INT, booking_count BIGINT) AS $$
@@ -70,7 +70,7 @@ RETURNS TABLE(day_of_week INT, hour_of_day INT, booking_count BIGINT) AS $$
          COUNT(*)
   FROM bookings WHERE status != 'cancelled'
   GROUP BY 1, 2 ORDER BY 1, 2;
-$$ LANGUAGE sql SECURITY DEFINER STABLE;
+$$ LANGUAGE sql SECURITY DEFINER STABLE SET search_path = public;
 
 CREATE OR REPLACE FUNCTION get_department_allocation_summary()
 RETURNS TABLE(department_name TEXT, total_allocated BIGINT, total_assets BIGINT, utilization_pct NUMERIC) AS $$
@@ -81,4 +81,4 @@ RETURNS TABLE(department_name TEXT, total_allocated BIGINT, total_assets BIGINT,
   FROM assets a
   JOIN departments d ON d.id = a.department_id
   GROUP BY d.name ORDER BY d.name;
-$$ LANGUAGE sql SECURITY DEFINER STABLE;
+$$ LANGUAGE sql SECURITY DEFINER STABLE SET search_path = public;
