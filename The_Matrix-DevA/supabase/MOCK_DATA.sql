@@ -136,3 +136,26 @@ INSERT INTO activity_logs (actor_id, action, entity_type, entity_id, metadata, c
   ('865c7daa-8686-4228-8425-8574330b98aa', 'asset.allocated', 'allocation', 'd1111111-1111-1111-1111-111111111111', '{"asset_id":"e1111111-1111-1111-1111-111111111111","to_user_id":"cccccccc-cccc-cccc-cccc-cccccccccccc"}'::jsonb, now() - interval '3 months'),
   ('cccccccc-cccc-cccc-cccc-cccccccccccc', 'booking.created', 'booking', 'c1111111-1111-1111-1111-111111111111', '{"asset_id":"e5555555-5555-5555-5555-555555555555"}'::jsonb, now() - interval '1 day'),
   ('dddddddd-dddd-dddd-dddd-dddddddddddd', 'maintenance.created', 'maintenance', 'f1111111-1111-1111-1111-111111111111', '{"asset_id":"e6666666-6666-6666-6666-666666666666"}'::jsonb, now() - interval '4 days');
+
+-- 10. Insert Audit Cycles
+INSERT INTO audit_cycles (id, name, scope_type, scope_value, start_date, end_date, status, created_by, closed_at, created_at, updated_at) VALUES
+  ('91111111-1111-1111-1111-111111111111', 'Q1 Engineering Asset Audit', 'department', '11111111-1111-1111-1111-111111111111', '2026-01-01', '2026-01-15', 'closed', '865c7daa-8686-4228-8425-8574330b98aa', '2026-01-14 16:30:00+00', '2026-01-01 09:00:00+00', '2026-01-14 16:30:00+00'),
+  ('92222222-2222-2222-2222-222222222222', 'Q2 HQ General Asset Audit', 'location', 'HQ', '2026-07-01', '2026-07-31', 'in_progress', '865c7daa-8686-4228-8425-8574330b98aa', null, '2026-07-01 09:00:00+00', '2026-07-01 09:00:00+00');
+
+-- 11. Insert Audit Assignments
+INSERT INTO audit_assignments (id, audit_cycle_id, auditor_id, assigned_at) VALUES
+  ('81111111-1111-1111-1111-111111111111', '91111111-1111-1111-1111-111111111111', 'bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb', '2026-01-01 09:05:00+00'),
+  ('82222222-2222-2222-2222-222222222222', '92222222-2222-2222-2222-222222222222', 'bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb', '2026-07-01 09:05:00+00');
+
+-- 12. Insert Audit Items
+INSERT INTO audit_items (id, audit_cycle_id, asset_id, auditor_id, status, notes, verified_at, created_at) VALUES
+  -- Cycle 1 (Closed)
+  (gen_random_uuid(), '91111111-1111-1111-1111-111111111111', 'e1111111-1111-1111-1111-111111111111', 'bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb', 'verified', 'Confirmed in good condition at Desk 4A', '2026-01-05 10:00:00+00', '2026-01-01 09:05:00+00'),
+  (gen_random_uuid(), '91111111-1111-1111-1111-111111111111', 'e2222222-2222-2222-2222-222222222222', 'bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb', 'verified', 'Audited remotely via screenshot proof', '2026-01-06 14:20:00+00', '2026-01-01 09:05:00+00'),
+  (gen_random_uuid(), '91111111-1111-1111-1111-111111111111', 'e3333333-3333-3333-3333-333333333333', 'bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb', 'damaged', 'Screen hinge is loose, needs maintenance ticket raised', '2026-01-07 11:30:00+00', '2026-01-01 09:05:00+00'),
+
+  -- Cycle 2 (In Progress)
+  (gen_random_uuid(), '92222222-2222-2222-2222-222222222222', 'e1111111-1111-1111-1111-111111111111', null, 'pending', null, null, '2026-07-01 09:05:00+00'),
+  (gen_random_uuid(), '92222222-2222-2222-2222-222222222222', 'e2222222-2222-2222-2222-222222222222', 'bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb', 'verified', 'Verified location matches remote database', now() - interval '2 days', '2026-07-01 09:05:00+00'),
+  (gen_random_uuid(), '92222222-2222-2222-2222-222222222222', 'e4444444-4444-4444-4444-444444444444', 'bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb', 'missing', 'Not found in Room 102 as registered, search initiated', now() - interval '1 day', '2026-07-01 09:05:00+00'),
+  (gen_random_uuid(), '92222222-2222-2222-2222-222222222222', 'e7777777-7777-7777-7777-777777777777', null, 'pending', null, null, '2026-07-01 09:05:00+00');
